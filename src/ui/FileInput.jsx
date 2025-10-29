@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const FileInput = styled.input`
+const FileInput = styled.input.attrs({ type: "file" })`
   font-size: 1.4rem;
   border-radius: var(--border-radius-sm);
 
@@ -18,6 +18,11 @@ const FileInput = styled.input`
 
     &:hover {
       background-color: var(--color-brand-700);
+    }
+
+    &:disabled {
+      background-color: var(--color-grey-400);
+      cursor: not-allowed;
     }
   }
 `;
