@@ -1,10 +1,29 @@
 import supabase, { supabaseUrl } from "./supabase"
 
 export async function createCabin(cabin) {
+    /**
+     * cabin.image could be a string or a File or undefined
+     * if undefined, we don't need to upload anything
+     * if string we don't need to upload anything
+     * if File, we need to upload it
+     */
+
+    // Saving the cabin data to supabase if there is no image
+    if (cabin.image === undefined || typeof cabin.image === "string") {
+        const { data, error } = await supabase
+            .from('cabins')
+            .insert([{ ...cabin }])
+            .select()
+        if (error) {
+            console.error(error)
+            throw new Error('Cabins could not be loaded')
+        }
+        return data
+    }
+
+    // Saving the cabin data to supabase if there is an image
     const imageName = `${cabin.name}-${Date.now()}`.replaceAll("/", '-')
     const imageUrl = `${supabaseUrl}/storage/v1/object/public/cabins/${imageName}`
-
-    // Saving the cabin data to supabase
     const { data, error } = await supabase
         .from('cabins')
         .insert([{ ...cabin, image: imageUrl }])
