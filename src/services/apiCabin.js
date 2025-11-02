@@ -92,5 +92,5 @@ export async function deleteCabinById(id) {
     }
 }
 
-export default { createCabin, getCabins, updateCabin, deleteCabinById }
+// export default { createCabin, getCabins, updateCabin, deleteCabinById }
 

@@ -56,7 +56,11 @@ const CabinRow = ({ cabin }) => {
         <Cabin>{name}</Cabin>
         <div>Fits up to {maxCapacity} guests</div>
         <Price>{formatCurrency(regularPrice)}</Price>
-        <Discount>{formatCurrency(discount)}</Discount>
+        {discount ? (
+          <Discount>{formatCurrency(discount)}</Discount>
+        ) : (
+          <div>&mdash;</div>
+        )}
         <div style={{ display: "flex", gap: "1rem" }}>
           <button onClick={() => setShowForm((showForm) => !showForm)}>
             Edit

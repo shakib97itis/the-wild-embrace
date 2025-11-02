@@ -1,8 +1,4 @@
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-
-import cabinApi from "../../services/apiCabin";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -11,8 +7,10 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 
+import useCreateCabin from "../../features/cabins/useCreateCabin";
+import useUpdateCabin from "../../features/cabins/useUpdateCabin";
+
 const CreateCabinForm = ({ cabinToEdit, isEditMode }) => {
-  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -22,36 +20,19 @@ const CreateCabinForm = ({ cabinToEdit, isEditMode }) => {
   } = useForm({
     defaultValues: isEditMode ? { ...cabinToEdit } : {},
   });
+  const { isCreating, createCabin } = useCreateCabin();
+  const { isUpdating, updateCabin } = useUpdateCabin();
 
-  const { mutate: createCabin, isPending: isCreatePending } = useMutation({
-    mutationFn: cabinApi.createCabin,
-    onSuccess: () => {
-      toast.success("Cabin created successfully!");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-      reset();
-    },
-    onError: (err) => {
-      toast.error("Cabin could not be created: " + err.message);
-      console.error(err);
-    },
-  });
-
-  const { mutate: updateCabin, isPending: isUpdatePending } = useMutation({
-    mutationFn: ({ id, cabin }) => cabinApi.updateCabin(id, cabin),
-    onSuccess: () => {
-      toast.success("Cabin updated successfully!");
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-    },
-    onError: (err) => {
-      toast.error("Cabin could not be updated: " + err.message);
-      console.error(err);
-    },
-  });
-
-  const isPending = isCreatePending || isUpdatePending;
+  const isPending = isCreating || isUpdating;
 
   const handleCabinForm = (data) => {
-    if (!isEditMode) createCabin({ ...data, image: data.image?.[0] });
+    if (!isEditMode)
+      createCabin(
+        { ...data, image: data.image?.[0] },
+        {
+          onSuccess: () => reset(),
+        }
+      );
 
     if (isEditMode)
       updateCabin({
