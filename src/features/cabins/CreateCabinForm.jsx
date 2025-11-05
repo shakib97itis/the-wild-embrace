@@ -1,48 +1,60 @@
-import { useForm } from "react-hook-form";
+import {useForm} from 'react-hook-form';
 
-import Input from "../../ui/Input";
-import Form from "../../ui/Form";
-import Button from "../../ui/Button";
-import FileInput from "../../ui/FileInput";
-import Textarea from "../../ui/Textarea";
-import FormRow from "../../ui/FormRow";
+import Input from '../../ui/Input';
+import Form from '../../ui/Form';
+import Button from '../../ui/Button';
+import FileInput from '../../ui/FileInput';
+import Textarea from '../../ui/Textarea';
+import FormRow from '../../ui/FormRow';
 
-import useCreateCabin from "../../features/cabins/useCreateCabin";
-import useUpdateCabin from "../../features/cabins/useUpdateCabin";
+import useCreateCabin from '../../features/cabins/useCreateCabin';
+import useUpdateCabin from '../../features/cabins/useUpdateCabin';
 
-const CreateCabinForm = ({ cabinToEdit, isEditMode }) => {
+const CreateCabinForm = ({cabinToEdit, isEditMode, onCloseModal, type}) => {
   const {
     register,
     handleSubmit,
     reset,
     getValues,
-    formState: { errors },
+    formState: {errors},
   } = useForm({
-    defaultValues: isEditMode ? { ...cabinToEdit } : {},
+    defaultValues: isEditMode ? {...cabinToEdit} : {},
   });
-  const { isCreating, createCabin } = useCreateCabin();
-  const { isUpdating, updateCabin } = useUpdateCabin();
-
+  const {isCreating, createCabin} = useCreateCabin();
+  const {isUpdating, updateCabin} = useUpdateCabin();
   const isPending = isCreating || isUpdating;
+  const formType = type ? 'modal' : 'regular';
 
   const handleCabinForm = (data) => {
     if (!isEditMode)
       createCabin(
-        { ...data, image: data.image?.[0] },
+        {...data, image: data.image?.[0]},
         {
-          onSuccess: () => reset(),
+          onSuccess: () => {
+            reset();
+            onCloseModal();
+          },
         }
       );
 
     if (isEditMode)
-      updateCabin({
-        id: cabinToEdit.id,
-        cabin: {
-          ...data,
-          oldImageLink: cabinToEdit.image,
-          image: typeof data.image === "string" ? data.image : data.image?.[0],
+      updateCabin(
+        {
+          id: cabinToEdit.id,
+          cabin: {
+            ...data,
+            oldImageLink: cabinToEdit.image,
+            image:
+              typeof data.image === 'string' ? data.image : data.image?.[0],
+          },
         },
-      });
+        {
+          onSuccess: () => {
+            reset();
+            onCloseModal();
+          },
+        }
+      );
   };
 
   const handleCabinFormError = (errors) => {
@@ -50,16 +62,19 @@ const CreateCabinForm = ({ cabinToEdit, isEditMode }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit(handleCabinForm, handleCabinFormError)}>
+    <Form
+      onSubmit={handleSubmit(handleCabinForm, handleCabinFormError)}
+      type={formType}
+    >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
           type="text"
           id="name"
           disabled={isPending}
-          {...register("name", {
+          {...register('name', {
             required: {
               value: true,
-              message: "Name is required",
+              message: 'Name is required',
             },
           })}
         />
@@ -71,14 +86,14 @@ const CreateCabinForm = ({ cabinToEdit, isEditMode }) => {
           id="maxCapacity"
           defaultValue={1}
           disabled={isPending}
-          {...register("maxCapacity", {
+          {...register('maxCapacity', {
             required: {
               value: true,
-              message: "Capacity is required",
+              message: 'Capacity is required',
             },
             min: {
               value: 1,
-              message: "Capacity should be at least 1",
+              message: 'Capacity should be at least 1',
             },
           })}
         />
@@ -90,14 +105,14 @@ const CreateCabinForm = ({ cabinToEdit, isEditMode }) => {
           id="regularPrice"
           defaultValue={0}
           disabled={isPending}
-          {...register("regularPrice", {
+          {...register('regularPrice', {
             required: {
               value: true,
-              message: "Regular price is required",
+              message: 'Regular price is required',
             },
             min: {
               value: 0,
-              message: "Regular price cannot be negative",
+              message: 'Regular price cannot be negative',
             },
           })}
         />
@@ -109,14 +124,14 @@ const CreateCabinForm = ({ cabinToEdit, isEditMode }) => {
           id="discount"
           defaultValue={0}
           disabled={isPending}
-          {...register("discount", {
+          {...register('discount', {
             required: {
               value: true,
-              message: "Discount is required",
+              message: 'Discount is required',
             },
             validate: (value) => {
-              if (Number(value) > Number(getValues("regularPrice"))) {
-                return "Discount must be less than regular price";
+              if (Number(value) > Number(getValues('regularPrice'))) {
+                return 'Discount must be less than regular price';
               }
               return true;
             },
@@ -130,10 +145,10 @@ const CreateCabinForm = ({ cabinToEdit, isEditMode }) => {
           id="description"
           defaultValue=""
           disabled={isPending}
-          {...register("description", {
+          {...register('description', {
             required: {
               value: true,
-              message: "Description is required",
+              message: 'Description is required',
             },
           })}
         />
@@ -144,18 +159,18 @@ const CreateCabinForm = ({ cabinToEdit, isEditMode }) => {
           id="image"
           accept="image/*"
           disabled={isPending}
-          {...register("image")}
+          {...register('image')}
         />
       </FormRow>
 
       <FormRow>
         <>
           {/* type is an HTML attribute! */}
-          <Button variation="secondary" type="reset">
+          <Button variation="secondary" type="reset" onClick={onCloseModal}>
             Clear form
           </Button>
           <Button disabled={isPending}>
-            {isPending ? "Loading..." : "Add cabin"}
+            {isPending ? 'Loading...' : 'Add cabin'}
           </Button>
         </>
       </FormRow>
