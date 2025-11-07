@@ -1,4 +1,5 @@
-import {MdClose} from 'react-icons/md';
+import {createPortal} from 'react-dom';
+import {HiXMark} from 'react-icons/hi2';
 import styled from 'styled-components';
 
 const StyledModal = styled.div`
@@ -18,7 +19,7 @@ const Overlay = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   background-color: var(--backdrop-color);
   backdrop-filter: blur(4px);
   z-index: 1000;
@@ -51,15 +52,16 @@ const Button = styled.button`
 `;
 
 const Modal = ({children, onClose}) => {
-  return (
+  return createPortal(
     <Overlay>
       <StyledModal>
         <Button onClick={onClose}>
-          <MdClose />
+          <HiXMark />
         </Button>
         <div>{children}</div>
       </StyledModal>
-    </Overlay>
+    </Overlay>,
+    document.body
   );
 };
 

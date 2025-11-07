@@ -10,7 +10,7 @@ import FormRow from '../../ui/FormRow';
 import useCreateCabin from '../../features/cabins/useCreateCabin';
 import useUpdateCabin from '../../features/cabins/useUpdateCabin';
 
-const CreateCabinForm = ({cabinToEdit, isEditMode, onCloseModal, type}) => {
+const CreateCabinForm = ({cabinToEdit, isEditMode, onCloseModal}) => {
   const {
     register,
     handleSubmit,
@@ -23,7 +23,6 @@ const CreateCabinForm = ({cabinToEdit, isEditMode, onCloseModal, type}) => {
   const {isCreating, createCabin} = useCreateCabin();
   const {isUpdating, updateCabin} = useUpdateCabin();
   const isPending = isCreating || isUpdating;
-  const formType = type ? 'modal' : 'regular';
 
   const handleCabinForm = (data) => {
     if (!isEditMode)
@@ -32,7 +31,7 @@ const CreateCabinForm = ({cabinToEdit, isEditMode, onCloseModal, type}) => {
         {
           onSuccess: () => {
             reset();
-            onCloseModal();
+            onCloseModal?.();
           },
         }
       );
@@ -51,7 +50,7 @@ const CreateCabinForm = ({cabinToEdit, isEditMode, onCloseModal, type}) => {
         {
           onSuccess: () => {
             reset();
-            onCloseModal();
+            onCloseModal?.();
           },
         }
       );
@@ -64,7 +63,7 @@ const CreateCabinForm = ({cabinToEdit, isEditMode, onCloseModal, type}) => {
   return (
     <Form
       onSubmit={handleSubmit(handleCabinForm, handleCabinFormError)}
-      type={formType}
+      type={onCloseModal ? 'modal' : 'regular'}
     >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
@@ -166,7 +165,11 @@ const CreateCabinForm = ({cabinToEdit, isEditMode, onCloseModal, type}) => {
       <FormRow>
         <>
           {/* type is an HTML attribute! */}
-          <Button variation="secondary" type="reset" onClick={onCloseModal}>
+          <Button
+            variation="secondary"
+            type="reset"
+            onClick={() => onCloseModal?.()}
+          >
             Clear form
           </Button>
           <Button disabled={isPending}>
