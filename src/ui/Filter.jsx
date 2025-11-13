@@ -1,4 +1,3 @@
-import {useCallback, useEffect} from 'react';
 import {useSearchParams} from 'react-router';
 import styled, {css} from 'styled-components';
 
@@ -36,21 +35,20 @@ const FilterButton = styled.button`
   }
 `;
 
-const Filter = ({filterField, options, defaultValue}) => {
+/**
+ * A component for filtering
+ * @param {string} filterField - The field to filter by
+ * @param {Array} options - The options to filter by
+ * @returns {JSX.Element}
+ */
+
+const Filter = ({filterField, options}) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleClick = useCallback(
-    (filterValue) => {
-      searchParams.set(filterField, filterValue);
-      setSearchParams(searchParams);
-    },
-    [searchParams, setSearchParams, filterField]
-  );
-
-  useEffect(() => {
-    const filterValue = searchParams.get('discount') || defaultValue;
-    handleClick(filterValue);
-  }, [searchParams, handleClick, defaultValue]);
+  const handleClick = (filterValue) => {
+    searchParams.set(filterField, filterValue);
+    setSearchParams(searchParams);
+  };
 
   return (
     <StyledFilter>
