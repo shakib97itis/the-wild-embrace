@@ -1,12 +1,29 @@
 import {getToday} from '../utils/helpers';
 import supabase from './supabase';
 
-export async function getBookings() {
-  const {data, error} = await supabase
+/**
+ * Fetches bookings from the database with optional filtering.
+ *
+ * @param {Object} options - Options for fetching bookings.
+ * @param {Object|null} options.filter - Filter criteria for bookings.
+ * @param {string} options.filter.field - The field to filter on.
+ * @param {string|number} options.filter.value - The value to filter by.
+ * @param {string} options.filter.operator - The operator to use for filtering (e.g., 'eq', 'gt', 'lt').
+ * @returns {Promise<Array>} - A promise that resolves to an array of bookings.
+ */
+export async function getBookings({filter}) {
+  let query = supabase
     .from('bookings')
     .select(
       'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)'
     );
+
+  // Apply filter if provided
+  if (filter) {
+    query = query[filter.operator](filter.field, filter.value);
+  }
+
+  const {data, error} = await query;
 
   if (error) {
     console.error(error);
