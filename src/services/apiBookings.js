@@ -11,7 +11,7 @@ import supabase from './supabase';
  * @param {string} options.filter.operator - The operator to use for filtering (e.g., 'eq', 'gt', 'lt').
  * @returns {Promise<Array>} - A promise that resolves to an array of bookings.
  */
-export async function getBookings({filter}) {
+export async function getBookings({filter, sortBy}) {
   let query = supabase
     .from('bookings')
     .select(
@@ -21,6 +21,11 @@ export async function getBookings({filter}) {
   // Apply filter if provided
   if (filter) {
     query = query[filter.operator](filter.field, filter.value);
+  }
+
+  // Apply sorting if provided
+  if (sortBy) {
+    query = query.order(sortBy.field, {ascending: sortBy.direction === 'asc'});
   }
 
   const {data, error} = await query;
