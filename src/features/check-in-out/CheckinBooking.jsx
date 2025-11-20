@@ -1,13 +1,16 @@
-import styled from "styled-components";
-import BookingDataBox from "../../features/bookings/BookingDataBox";
+import styled from 'styled-components';
+import BookingDataBox from '../../features/bookings/BookingDataBox';
 
-import Row from "../../ui/Row";
-import Heading from "../../ui/Heading";
-import ButtonGroup from "../../ui/ButtonGroup";
-import Button from "../../ui/Button";
-import ButtonText from "../../ui/ButtonText";
+import Row from '../../ui/Row';
+import Heading from '../../ui/Heading';
+import ButtonGroup from '../../ui/ButtonGroup';
+import Button from '../../ui/Button';
+import ButtonText from '../../ui/ButtonText';
 
-import { useMoveBack } from "../../hooks/useMoveBack";
+import {useMoveBack} from '../../hooks/useMoveBack';
+import useBooking from '../bookings/useBooking';
+import Spinner from '../../ui/Spinner';
+import {useEffect, useState} from 'react';
 
 const Box = styled.div`
   /* Box */
@@ -18,17 +21,23 @@ const Box = styled.div`
 `;
 
 function CheckinBooking() {
+  const [conformPaid, setConformPaid] = useState(false);
   const moveBack = useMoveBack();
+  const {isLoading, booking} = useBooking();
 
-  const booking = {};
+  useEffect(() => {
+    setConformPaid(booking?.isPaid);
+  }, [booking?.isPaid]);
+
+  if (isLoading) return <Spinner />;
 
   const {
     id: bookingId,
-    guests,
-    totalPrice,
-    numGuests,
-    hasBreakfast,
-    numNights,
+    // guests,
+    // totalPrice,
+    // numGuests,
+    // hasBreakfast,
+    // numNights,
   } = booking;
 
   function handleCheckin() {}
@@ -41,6 +50,8 @@ function CheckinBooking() {
       </Row>
 
       <BookingDataBox booking={booking} />
+
+      <Box></Box>
 
       <ButtonGroup>
         <Button onClick={handleCheckin}>Check in booking #{bookingId}</Button>

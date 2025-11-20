@@ -15,6 +15,8 @@ import Settings from './pages/Settings';
 import Users from './pages/Users';
 import AppLayout from './ui/AppLayout';
 import ReactHotToast from './ui/ReactHotToast';
+import Booking from './pages/Booking';
+import Checkin from './pages/Checkin';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,6 +41,8 @@ const App = () => {
               <Route path="/" element={<Navigate replace to="/dashboard" />} />
               <Route path="/account" element={<Account />} />
               <Route path="/bookings" element={<Bookings />} />
+              <Route path="/bookings/:id" element={<Booking />} />
+              <Route path="/checkin/:id" element={<Checkin />} />
               <Route path="/cabins" element={<Cabins />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/login" element={<Login />} />
