@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, {css} from 'styled-components';
 
 const sizes = {
   small: css`
@@ -54,11 +54,12 @@ const StyledButton = styled.button`
   box-shadow: var(--shadow-sm);
   border: none;
 
-  ${(props) => sizes[props.size || "medium"]}
-  ${(props) => variations[props.$variation || "primary"]}
+  ${(props) => sizes[props.size || 'medium']}
+  ${(props) => variations[props.$variation || 'primary']}
+  ${(props) => props.disabled && 'cursor: not-allowed; opacity: 0.8;'}
 `;
 
-const Button = ({ variation, size, ...rest }) => {
+const Button = ({variation, size, ...rest}) => {
   return <StyledButton $variation={variation} size={size} {...rest} />;
 };
 
