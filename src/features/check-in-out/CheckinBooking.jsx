@@ -12,10 +12,10 @@ import BookingDataBox from '../../features/bookings/BookingDataBox';
 import Spinner from '../../ui/Spinner';
 import Checkbox from '../../ui/Checkbox';
 import useCheckin from './useCheckin';
-import {useNavigate} from 'react-router';
+import {formatCurrency} from '../../utils/helpers';
+import useSettings from '../settings/useSettings';
 
 const Box = styled.div`
-  /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
@@ -24,35 +24,49 @@ const Box = styled.div`
 
 function CheckinBooking() {
   const [confirmPaid, setConfirmPaid] = useState(false);
-  const {checkinBooking, isCheckingIn} = useCheckin();
-  const navigate = useNavigate();
+  const [needsBreakfast, setNeedsBreakfast] = useState(false);
 
-  const moveBack = useMoveBack();
+  const {checkin, isCheckingIn} = useCheckin();
   const {isLoading, booking} = useBooking();
+  const {isPending: isSettingsLoading, settings} = useSettings();
+  const moveBack = useMoveBack();
 
   useEffect(() => {
     setConfirmPaid(booking?.isPaid || false);
-  }, [booking?.isPaid]);
+    setNeedsBreakfast(booking?.hasBreakfast || false);
+  }, [booking?.isPaid, booking?.hasBreakfast]);
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || isSettingsLoading) return <Spinner />;
 
   const {
     id: bookingId,
     guests,
-    status,
-    // totalPrice,
-    // numGuests,
+    totalPrice,
+    numGuests,
     // hasBreakfast,
-    // numNights,
+    numNights,
+    isPaid,
   } = booking;
 
+  const breakfast = {
+    pricePerGuest: settings.breakfastPrice || 0,
+    totalPrice: (settings.breakfastPrice || 0) * numGuests * numNights,
+  };
+
   function handleCheckin() {
-    if (status === 'checked-in') return;
-    checkinBooking(bookingId, {
-      onSuccess: () => {
-        navigate('/');
-      },
-    });
+    if (!confirmPaid) return;
+    if (needsBreakfast) {
+      checkin({
+        bookingId,
+        breakfast: {
+          hasBreakfast: true,
+          totalPrice: totalPrice + breakfast.totalPrice,
+          extrasPrice: breakfast.totalPrice,
+        },
+      });
+    } else {
+      checkin({bookingId, breakfast: {}});
+    }
   }
 
   return (
@@ -64,17 +78,49 @@ function CheckinBooking() {
 
       <BookingDataBox booking={booking} />
 
-      <Box>
-        <Checkbox
-          checked={confirmPaid}
-          id={bookingId}
-          disabled={confirmPaid || isCheckingIn}
-          onChange={() => setConfirmPaid((prev) => !prev)}
-        >
-          I confirm that I have received payment for this booking from{' '}
-          <b>{guests.fullName}</b>
-        </Checkbox>
-      </Box>
+      {!isPaid && (
+        <Box>
+          <Checkbox
+            checked={needsBreakfast}
+            id="needs-breakfast"
+            disabled={false}
+            onChange={() => {
+              setNeedsBreakfast((prev) => !prev);
+              setConfirmPaid(false);
+            }}
+          >
+            Add breakfast for{' '}
+            <b>
+              {numGuests} guest{numGuests > 1 ? 's' : ''} for {numNights} night
+              {numNights > 1 ? 's' : ''} at{' '}
+              {formatCurrency(breakfast.pricePerGuest)} each (
+              {formatCurrency(breakfast.totalPrice)})
+            </b>
+          </Checkbox>
+        </Box>
+      )}
+
+      {!isPaid && (
+        <Box>
+          <Checkbox
+            checked={confirmPaid}
+            id={'confirm-paid'}
+            disabled={isCheckingIn}
+            onChange={() => setConfirmPaid((prev) => !prev)}
+          >
+            I confirm that <b>{guests.fullName}</b> has paid the total amount of{' '}
+            <b>
+              {needsBreakfast
+                ? `${formatCurrency(
+                    totalPrice + breakfast.totalPrice
+                  )} (${formatCurrency(totalPrice)} + ${formatCurrency(
+                    breakfast.totalPrice
+                  )})`
+                : formatCurrency(totalPrice)}
+            </b>
+          </Checkbox>
+        </Box>
+      )}
 
       <ButtonGroup>
         <Button
