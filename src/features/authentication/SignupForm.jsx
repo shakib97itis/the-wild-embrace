@@ -3,8 +3,16 @@ import Button from '../../ui/Button';
 import Form from '../../ui/Form';
 import FormRow from '../../ui/FormRow';
 import Input from '../../ui/Input';
+import styled from 'styled-components';
+import {useSignup} from './useSignup';
 
 // Email regex: /\S+@\S+\.\S+/
+
+const Box = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
 
 function SignupForm() {
   const {
@@ -12,14 +20,30 @@ function SignupForm() {
     formState: {errors},
     getValues,
     handleSubmit,
+    reset,
   } = useForm();
 
+  const {signup, isSigningUp} = useSignup();
+
+  function onSubmit(data) {
+    const {fullName, email, password} = data;
+    signup(
+      {fullName, email, password},
+      {
+        onSuccess: () => {
+          reset();
+        },
+      }
+    );
+  }
+
   return (
-    <Form onSubmit={handleSubmit((data) => console.log(data))}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Full name" error={errors.fullName?.message}>
         <Input
           type="text"
           id="fullName"
+          disabled={isSigningUp}
           {...register('fullName', {required: 'Full name is required'})}
         />
       </FormRow>
@@ -28,6 +52,7 @@ function SignupForm() {
         <Input
           type="email"
           id="email"
+          disabled={isSigningUp}
           {...register('email', {
             required: 'Email is required',
             pattern: {value: /\S+@\S+\.\S+/, message: 'Invalid email address'},
@@ -42,6 +67,7 @@ function SignupForm() {
         <Input
           type="password"
           id="password"
+          disabled={isSigningUp}
           {...register('password', {
             required: 'Password is required',
             minLength: {
@@ -56,6 +82,7 @@ function SignupForm() {
         <Input
           type="password"
           id="passwordConfirm"
+          disabled={isSigningUp}
           {...register('passwordConfirm', {
             required: 'Please confirm your password',
             validate: (value) =>
@@ -64,13 +91,13 @@ function SignupForm() {
         />
       </FormRow>
 
-      <div>
+      <Box>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" disabled={isSigningUp}>
           Cancel
         </Button>
-        <Button>Create new user</Button>
-      </div>
+        <Button disabled={isSigningUp}>Create new user</Button>
+      </Box>
     </Form>
   );
 }
