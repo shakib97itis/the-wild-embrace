@@ -1,16 +1,105 @@
-# React + Vite
+# 🏨 The Wild Embrace
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern hotel management application built with **React**, **Supabase**, and **React Query** — designed to streamline hotel operations and deliver an efficient, real-world workflow.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Overview
 
-## React Compiler
+**The Wild Embrace** is a full-featured hotel management system that allows staff to manage bookings, guests, cabins, authentication, and analytics through a clean, user-friendly interface.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+This project demonstrates strong front-end engineering skills, API integration, state management, and production-ready UI architecture.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Features
+
+- **User Authentication** with Supabase Auth
+- **Cabin Management** (Create, edit, delete cabins)
+- **Guest & Booking Management**
+- **Check-in / Check-out Operations**
+- **Analytics Dashboard** with KPIs & charts
+- **Image Upload & Storage** via Supabase
+- **Form Validation** using React Hook Form
+- **Optimistic UI & Caching** with React Query
+- **Responsive UI** with Styled Components
+- **Toast Notifications** with react-hot-toast
+
+---
+
+## 🛠️ Tech Stack & Tools
+
+### **Frontend**
+
+- React 19
+- React Router 7
+- Styled Components 6
+- React Hook Form
+- React Icons
+- React Hot Toast
+
+### **Backend (BaaS)**
+
+- Supabase
+  - Authentication
+  - PostgreSQL Database
+  - File Storage
+  - Row Level Security
+
+### **Data Fetching & State Management**
+
+- @tanstack/react-query
+- React Query Devtools
+
+### **Utilities**
+
+- date-fns
+
+### **Build Tools & Development**
+
+- Vite 7
+- ESLint 9
+- @eslint/js
+- eslint-plugin-react-hooks
+- eslint-plugin-react-refresh
+- @types/react
+- @types/react-dom
+
+---
+
+## ⚙️ Getting Started
+
+### **1. Clone the repository**
+
+```bash
+git clone https://github.com/your-username/the-wild-embrace.git
+cd the-wild-embrace
+```
+
+### **2. Install dependencies**
+
+```bash
+npm install
+```
+
+### **3. Set up Supabase**
+
+- Create a new project on [Supabase](https://supabase.com/)
+- Set up your database schema and RLS policies (refer to the `/supabase` folder for SQL scripts)
+- Obtain your Supabase URL and Anon Key from the project settings
+- Create a `.env` file in the root directory and add your Supabase credentials:
+
+```env
+VITE_SUPABASE_URL=your-supabase-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+### **4. Run the development server**
+
+```bash
+npm run dev
+```
+
+## 📜 License
+
+This project is licensed under the MIT License.
