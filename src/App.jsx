@@ -18,6 +18,7 @@ import ReactHotToast from './ui/ReactHotToast';
 import Booking from './pages/Booking';
 import Checkin from './pages/Checkin';
 import ProtectedRoute from './ui/ProtectedRoute';
+import DarkModeProvider from './context/DarkModeContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,35 +32,40 @@ const queryClient = new QueryClient({
 const App = () => {
   return (
     <StyleSheetManager shouldForwardProp={isPropValid}>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <GlobalStyles />
-        <ReactHotToast />
+      <DarkModeProvider>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <GlobalStyles />
+          <ReactHotToast />
 
-        <BrowserRouter>
-          <Routes>
-            <Route
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route path="/" element={<Navigate replace to="/dashboard" />} />
-              <Route path="/account" element={<Account />} />
-              <Route path="/bookings" element={<Bookings />} />
-              <Route path="/bookings/:id" element={<Booking />} />
-              <Route path="/checkin/:id" element={<Checkin />} />
-              <Route path="/cabins" element={<Cabins />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/users" element={<Users />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </QueryClientProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route
+                element={
+                  <ProtectedRoute>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route
+                  path="/"
+                  element={<Navigate replace to="/dashboard" />}
+                />
+                <Route path="/account" element={<Account />} />
+                <Route path="/bookings" element={<Bookings />} />
+                <Route path="/bookings/:id" element={<Booking />} />
+                <Route path="/checkin/:id" element={<Checkin />} />
+                <Route path="/cabins" element={<Cabins />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/users" element={<Users />} />
+              </Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </DarkModeProvider>
     </StyleSheetManager>
   );
 };
