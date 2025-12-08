@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledLogo = styled.div`
   text-align: center;
@@ -11,6 +11,9 @@ const Img = styled.img`
 `;
 
 function Logo() {
+  // TODO: Will implement dark mode logo later
+  // const [isDarkMode, setIsDarkMode] = useDarkMode();
+
   return (
     <StyledLogo>
       <Img src="/wild-embrace-logo.png" alt="Logo" />
