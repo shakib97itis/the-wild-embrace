@@ -2,15 +2,12 @@ import {sub} from 'date-fns';
 import {useSearchParams} from 'react-router';
 import {getBookingsAfterDate} from '../../services/apiBookings';
 import {useQuery} from '@tanstack/react-query';
-
 export function useRecentBookings() {
   const [searchParams] = useSearchParams();
   const recentDays = searchParams.get('last')
     ? Number(searchParams.get('last'))
     : 7;
-
   const queryDate = sub(new Date(), {days: recentDays}).toISOString();
-
   const {
     data: recentBookings,
     isPending: isBookingsLoading,
@@ -24,5 +21,5 @@ export function useRecentBookings() {
     console.error(error);
     throw new Error('Bookings could not get loaded');
   }
-  return {recentBookings, isBookingsLoading};
+  return {recentBookings, isBookingsLoading, numDays: recentDays};
 }
