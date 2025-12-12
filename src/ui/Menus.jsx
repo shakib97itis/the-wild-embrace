@@ -85,12 +85,13 @@ const Toggle = ({id}) => {
   const {open, close, openId, setPosition} = useContext(MenusContext);
 
   const handleToggle = (e) => {
-    openId === id ? close() : open(id);
-    const rect = e.target.getBoundingClientRect();
+    e.stopPropagation();
+    const rect = e.target.closest('button').getBoundingClientRect();
     setPosition({
       x: window.innerWidth - rect.width - rect.x,
       y: rect.y + rect.height + 10,
     });
+    openId === id ? close() : open(id);
   };
 
   return (
@@ -102,7 +103,9 @@ const Toggle = ({id}) => {
 
 const List = ({children, id}) => {
   const {openId, close, position} = useContext(MenusContext);
-  const ref = useOutsideClick(close);
+  // const ref = useOutsideClick(close);
+  const ref = useOutsideClick(close, false);
+
   if (openId !== id) return null;
 
   return createPortal(
