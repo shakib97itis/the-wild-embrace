@@ -4,7 +4,6 @@ import useDarkMode from '../context/useDarkMode';
 
 const DarkModeToggle = () => {
   const {isDarkMode, toggleDarkMode} = useDarkMode();
-  console.log('Dark mode is', isDarkMode ? 'enabled' : 'disabled');
   return (
     <ButtonIcon onClick={toggleDarkMode} aria-label="Toggle dark mode">
       {isDarkMode ? <HiOutlineSun /> : <HiOutlineMoon />}
