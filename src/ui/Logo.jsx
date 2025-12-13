@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import useDarkMode from './../context/useDarkMode';
 
 const StyledLogo = styled.div`
   text-align: center;
@@ -11,12 +12,18 @@ const Img = styled.img`
 `;
 
 function Logo() {
-  // TODO: Will implement dark mode logo later
-  // const [isDarkMode, setIsDarkMode] = useDarkMode();
+  const {isDarkMode} = useDarkMode();
 
   return (
     <StyledLogo>
-      <Img src="/wild-embrace-logo.png" alt="Logo" />
+      <Img
+        src={
+          isDarkMode
+            ? '/the_wild_embrace_logo_gold.png'
+            : '/the_wild_embrace_logo_light.png'
+        }
+        alt="Logo"
+      />
     </StyledLogo>
   );
 }
