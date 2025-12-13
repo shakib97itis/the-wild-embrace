@@ -1,33 +1,53 @@
 # 🏨 The Wild Embrace
 
-A modern hotel management application built with **React**, **Supabase**, and **React Query** — designed to streamline hotel operations and deliver an efficient, real-world workflow.
+**The Wild Embrace** is a production-grade hotel management system built with **React**, **Supabase**, and **React Query**.
+
+This project is designed to reflect **real-world hotel operations**, focusing on clean architecture, scalable state management, and performance‑optimized data handling.
+
+🔗 **Live Application:** [https://the-wild-embrace.netlify.app](https://the-wild-embrace.netlify.app)
 
 ---
 
-## 🚀 Overview
+## 🎯 Why This Project Matters (For Hiring Managers)
 
-**The Wild Embrace** is a full-featured hotel management system that allows staff to manage bookings, guests, cabins, authentication, and analytics through a clean, user-friendly interface.
+This application demonstrates my ability to:
 
-This project demonstrates strong front-end engineering skills, API integration, state management, and production-ready UI architecture.
+- Build **real-world business applications**, not just UI demos
+- Design **scalable React architecture** with clear separation of concerns
+- Work with **authentication, databases, and file storage** in production
+- Handle **server state, caching, optimistic updates, and background sync**
+- Write **maintainable, readable, and professional front-end code**
 
----
-
-## ✨ Features
-
-- **User Authentication** with Supabase Auth
-- **Cabin Management** (Create, edit, delete cabins)
-- **Guest & Booking Management**
-- **Check-in / Check-out Operations**
-- **Analytics Dashboard** with KPIs & charts
-- **Image Upload & Storage** via Supabase
-- **Form Validation** using React Hook Form
-- **Optimistic UI & Caching** with React Query
-- **Responsive UI** with Styled Components
-- **Toast Notifications** with react-hot-toast
+The Wild Embrace closely mirrors how internal dashboards and admin panels are built in real companies.
 
 ---
 
-## 🛠️ Tech Stack & Tools
+## 🚀 Core Functionality
+
+- 🔐 **Authentication & Authorization** (Supabase Auth)
+- 🏡 **Cabin Management** — create, update, delete cabins with image uploads
+- 👥 **Guest & Booking Management**
+- 🔄 **Check‑in / Check‑out Workflow**
+- 📊 **Analytics Dashboard** with KPIs and visual insights
+- 🖼️ **Image Upload & Storage** using Supabase Storage
+- ✅ **Robust Form Validation** with React Hook Form
+- ⚡ **Optimistic UI & Intelligent Caching** with React Query
+- 📱 **Fully Responsive UI** for desktop and tablet
+- 🔔 **User Feedback & Error Handling** via toast notifications
+
+---
+
+## 🧠 Technical Highlights
+
+- **Server State Management:** React Query for caching, background refetching, and optimistic updates
+- **Secure Backend Integration:** Supabase with Row Level Security (RLS)
+- **Component‑Driven Design:** Reusable and scalable UI components
+- **Modern React Patterns:** Hooks, compound components, controlled forms
+- **Performance‑Focused:** Reduced unnecessary re‑renders and network requests
+
+---
+
+## 🛠️ Tech Stack
 
 ### **Frontend**
 
@@ -41,10 +61,11 @@ This project demonstrates strong front-end engineering skills, API integration, 
 ### **Backend (BaaS)**
 
 - Supabase
+
   - Authentication
   - PostgreSQL Database
   - File Storage
-  - Row Level Security
+  - Row Level Security (RLS)
 
 ### **Data Fetching & State Management**
 
@@ -55,51 +76,25 @@ This project demonstrates strong front-end engineering skills, API integration, 
 
 - date-fns
 
-### **Build Tools & Development**
+### **Build & Tooling**
 
 - Vite 7
 - ESLint 9
 - @eslint/js
 - eslint-plugin-react-hooks
 - eslint-plugin-react-refresh
-- @types/react
-- @types/react-dom
+- TypeScript type definitions
 
 ---
 
-## ⚙️ Getting Started
+## 📈 Project Type
 
-### **1. Clone the repository**
+- Real‑world Admin Dashboard
+- Internal Business Tool
+- Hotel / Property Management System
 
-```bash
-git clone https://github.com/your-username/the-wild-embrace.git
-cd the-wild-embrace
-```
-
-### **2. Install dependencies**
-
-```bash
-npm install
-```
-
-### **3. Set up Supabase**
-
-- Create a new project on [Supabase](https://supabase.com/)
-- Set up your database schema and RLS policies (refer to the `/supabase` folder for SQL scripts)
-- Obtain your Supabase URL and Anon Key from the project settings
-- Create a `.env` file in the root directory and add your Supabase credentials:
-
-```env
-VITE_SUPABASE_URL=your-supabase-url
-VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-```
-
-### **4. Run the development server**
-
-```bash
-npm run dev
-```
+---
 
 ## 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
